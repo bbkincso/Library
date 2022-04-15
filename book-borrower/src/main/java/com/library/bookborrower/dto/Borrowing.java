@@ -3,11 +3,10 @@ package com.library.bookborrower.dto;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-import java.util.List;
 
 public class Borrowing {
 
-        private long id;
+        private Long borrowingId;
         private Date startDate;
         private Date endDate;
         private Status status;
@@ -17,7 +16,8 @@ public class Borrowing {
         public Borrowing() {
         }
 
-        public Borrowing(Date startDate, Date endDate, Status status, Object user, Long bookId) {
+        public Borrowing(Long borrowingId, Date startDate, Date endDate, Status status, Object user, Long bookId) {
+            this.borrowingId = borrowingId;
             this.startDate = startDate;
             this.endDate = endDate;
             this.status = status;
@@ -25,15 +25,15 @@ public class Borrowing {
             this.bookId = bookId;
         }
 
-        public long getId() {
-            return id;
-        }
+    public Long getBorrowingId() {
+        return borrowingId;
+    }
 
-        public void setId(long id) {
-            this.id = id;
-        }
+    public void setBorrowingId(Long borrowingId) {
+        this.borrowingId = borrowingId;
+    }
 
-        public Date getStartDate() {
+    public Date getStartDate() {
             return startDate;
         }
 
@@ -76,7 +76,7 @@ public class Borrowing {
     @Override
         public String toString() {
             return "Borrowing{" +
-                    "id=" + id +
+                    "id=" + borrowingId +
                     ", startDate=" + startDate +
                     ", endDate=" + endDate +
                     ", status=" + status +

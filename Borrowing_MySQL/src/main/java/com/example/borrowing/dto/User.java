@@ -22,7 +22,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(name = "user_id")
     @Column(name = "id")
-    private long id;
+    private Long userId;
     @NotEmpty
     @Size(min = 2, message = "FirstName should be at least 2 characters.")
     @Column(name = "first_name")
@@ -56,13 +56,21 @@ public class User {
         this.address = address;
     }
 
-    public long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
+
+    //    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public String getFirstName() {
         return firstName;
@@ -115,7 +123,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + userId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", dob=" + dob +

@@ -12,13 +12,13 @@ import java.util.List;
 
 @Entity
 @Table(name="borrowings")
-@ApiModel(description = "Book model description")
+@ApiModel(description = "Borrowing model description")
 public class Borrowing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long borrowingId;
+    private Long borrowingId;
 
     @CreationTimestamp
     @Column(name="start_date", nullable = false, updatable=false)
@@ -31,6 +31,7 @@ public class Borrowing {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -58,12 +59,12 @@ public class Borrowing {
         this.bookId = bookId;
     }
 
-    public long getBorrowingId() {
+    public Long getBorrowingId() {
         return borrowingId;
     }
 
-    public void setBorrowingId(long id) {
-        this.borrowingId = id;
+    public void setBorrowingId(Long borrowingId) {
+        this.borrowingId = borrowingId;
     }
 
     public User getUser() {
@@ -101,7 +102,7 @@ public class Borrowing {
     @Override
     public String toString() {
         return "Borrowing{" +
-                "borrowingId=" + borrowingId +
+                "id=" + borrowingId +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", status=" + status +
