@@ -1,8 +1,10 @@
 package com.example.borrowing.controllers;
 
 import com.example.borrowing.dao.BorrowingRepository;
+import com.example.borrowing.dto.Book;
 import com.example.borrowing.dto.Borrowing;
 import com.example.borrowing.exception.BorrowingNotFoundException;
+import com.example.borrowing.feignclients.BookFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,10 +23,25 @@ public class BorrowingController {
     @Autowired
     BorrowingRepository borrowingRepo;
 
+    @Autowired
+    BookFeignClient bookFeignClient;
+
+
+//serviceOneEntities.stream().filter(s1->s2ValueMap.containsKey(s1.getId())).forEach(s1->{
+//        s1.setServiceTwoValue(s2ValueMap.get(s1.getId()));
+
+
     //get all borrowings
     @RequestMapping("/borrowings")
     List<Borrowing> getAllBorrowings(){
         List<Borrowing> borrowingList = borrowingRepo.findAll();
+
+        for (Borrowing borrowing : borrowingList) {
+            Long bookId = borrowing.getBookId();
+            Book book = bookFeignClient.getBookById(bookId);
+            borrowing.setBookInfo(book);
+        }
+
         return borrowingList;
     }
 
@@ -33,23 +50,14 @@ public class BorrowingController {
     Optional<Borrowing> getBorrowingById(@PathVariable("borrowingId") Long borrowingId) {
         Optional<Borrowing> borrowing = borrowingRepo.findById(borrowingId);
         if(borrowing.isPresent()){
+            Long bookId = borrowing.get().getBookId();
+            Book book = bookFeignClient.getBookById(bookId);
+            borrowing.get().setBookInfo(book);
             return borrowing;
         } else {
             throw new BorrowingNotFoundException("No borrowing with id: "+borrowingId);
         }
     }
-
-
-    //get borrowings by user
-//    @RequestMapping("/borrowings/users/{userId}")
-//    List<Borrowing> findBorrowingsByUserId(@PathVariable("userId") Long userId) {
-//        List<Borrowing> borrowingList = borrowingRepo.findBorrowingByUser(userId);
-//        if(!borrowingList.isEmpty()){
-//            return borrowingList;
-//        } else {
-//            throw new BorrowingNotFoundException("No borrowing found with user Id: "+ userId);
-//        }
-//    }
 
     //get borrowings by books
     @RequestMapping("/borrowings/books/{id}")

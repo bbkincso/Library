@@ -40,6 +40,9 @@ public class Borrowing {
     @Column(name = "book_id")
     private Long bookId;
 
+    @Transient
+    private Book bookInfo;
+
     public Borrowing() {
     }
 
@@ -97,6 +100,14 @@ public class Borrowing {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Book getBookInfo() {
+        return bookInfo;
+    }
+
+    public void setBookInfo(Book bookInfo) {
+        this.bookInfo = bookInfo;
     }
 
     @Override

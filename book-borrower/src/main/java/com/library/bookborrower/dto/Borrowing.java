@@ -12,17 +12,19 @@ public class Borrowing {
         private Status status;
         private Object user;
         private Long bookId;
+        private Book bookInfo;
 
         public Borrowing() {
         }
 
-        public Borrowing(Long borrowingId, Date startDate, Date endDate, Status status, Object user, Long bookId) {
+        public Borrowing(Long borrowingId, Date startDate, Date endDate, Status status, Object user, Long bookId, Book bookInfo) {
             this.borrowingId = borrowingId;
             this.startDate = startDate;
             this.endDate = endDate;
             this.status = status;
             this.user = user;
             this.bookId = bookId;
+            this.bookInfo = bookInfo;
         }
 
     public Long getBorrowingId() {
@@ -73,6 +75,14 @@ public class Borrowing {
         this.bookId = bookId;
     }
 
+    public Book getBookInfo() {
+        return bookInfo;
+    }
+
+    public void setBookInfo(Book bookInfo) {
+        this.bookInfo = bookInfo;
+    }
+
     @Override
         public String toString() {
             return "Borrowing{" +
@@ -82,6 +92,7 @@ public class Borrowing {
                     ", status=" + status +
                     ", user=" + user +
                     ", bookId=" + bookId +
+                    ", bookInfo=" + bookInfo +
                     '}';
         }
     }
