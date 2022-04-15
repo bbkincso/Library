@@ -12,12 +12,12 @@ public class Borrowing {
         private Status status;
         private Object user;
         private Long bookId;
-        private Book bookInfo;
+        private Object bookInfo;
 
         public Borrowing() {
         }
 
-        public Borrowing(Long borrowingId, Date startDate, Date endDate, Status status, Object user, Long bookId, Book bookInfo) {
+        public Borrowing(Long borrowingId, Date startDate, Date endDate, Status status, Object user, Long bookId, Object bookInfo) {
             this.borrowingId = borrowingId;
             this.startDate = startDate;
             this.endDate = endDate;
@@ -75,11 +75,11 @@ public class Borrowing {
         this.bookId = bookId;
     }
 
-    public Book getBookInfo() {
+    public Object getBookInfo() {
         return bookInfo;
     }
 
-    public void setBookInfo(Book bookInfo) {
+    public void setBookInfo(Object bookInfo) {
         this.bookInfo = bookInfo;
     }
 

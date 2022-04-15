@@ -27,10 +27,6 @@ public class BorrowingController {
     BookFeignClient bookFeignClient;
 
 
-//serviceOneEntities.stream().filter(s1->s2ValueMap.containsKey(s1.getId())).forEach(s1->{
-//        s1.setServiceTwoValue(s2ValueMap.get(s1.getId()));
-
-
     //get all borrowings
     @RequestMapping("/borrowings")
     List<Borrowing> getAllBorrowings(){
@@ -64,6 +60,11 @@ public class BorrowingController {
     List<Borrowing>findBorrowingsByBookId(@PathVariable("id") Long bookId) {
         List<Borrowing> borrowingList = borrowingRepo.findByBookId(bookId);
         if(!borrowingList.isEmpty()){
+            for (Borrowing borrowing : borrowingList) {
+                Long borrowingBookId = borrowing.getBookId();
+                Book book = bookFeignClient.getBookById(borrowingBookId);
+                borrowing.setBookInfo(book);
+            }
             return borrowingList;
         } else {
             throw new BorrowingNotFoundException("No borrowing found with book Id: "+ bookId);

@@ -27,12 +27,6 @@ public class BookBorrowerController {
         return bookBorrowingFeignClient.getAllBorrowings();
     }
 
-    //get borrowings by user
-//    @RequestMapping("/borrowing-client/users/{userId}")
-//    List<Borrowing>findBorrowingsByUser(@PathVariable("userId") Long userId) {
-//        return bookBorrowingFeignClient.getBorrowingsByUser(userId);
-//    }
-
     //get borrowings by books
     @RequestMapping("/borrowing-client/books/{bookId}")
     List<Borrowing>findBorrowingsByBookId(@PathVariable("bookId") Long bookId) {
