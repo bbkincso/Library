@@ -18,7 +18,7 @@ public class Borrowing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private long borrowingId;
 
     @CreationTimestamp
     @Column(name="start_date", nullable = false, updatable=false)
@@ -36,29 +36,34 @@ public class Borrowing {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
-    @JoinTable(name = "borrowing_books",
-            joinColumns = @JoinColumn(name = "borrowing_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id"))
-    private List<Book> books;
+    @Column(name = "book_id")
+    private Long bookId;
 
     public Borrowing() {
     }
 
-    public Borrowing(Date startDate, Date endDate, Status status, User user, List<Book> books) {
+    public Borrowing(Date startDate, Date endDate, Status status, User user, Long bookId) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
         this.user = user;
-        this.books = books;
+        this.bookId = bookId;
     }
 
-    public long getId() {
-        return id;
+    public Long getBookId() {
+        return bookId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
+    }
+
+    public long getBorrowingId() {
+        return borrowingId;
+    }
+
+    public void setBorrowingId(long id) {
+        this.borrowingId = id;
     }
 
     public User getUser() {
@@ -67,15 +72,6 @@ public class Borrowing {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-
-        public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
     }
 
     public Date getStartDate() {
@@ -105,12 +101,12 @@ public class Borrowing {
     @Override
     public String toString() {
         return "Borrowing{" +
-                "id=" + id +
+                "borrowingId=" + borrowingId +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", status=" + status +
                 ", user=" + user +
-                ", books=" + books +
+                ", bookId=" + bookId +
                 '}';
     }
 }

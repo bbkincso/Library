@@ -2,14 +2,9 @@ package com.bookcatalogue.controllers;
 
 import com.bookcatalogue.dao.BookRepository;
 
-
 import com.bookcatalogue.dto.Book;
 import com.bookcatalogue.exception.BookNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -25,34 +20,32 @@ import java.util.Optional;
 @Service
 public class BookService {
 
-    @Autowired
-    BookRepository bookRepo;
+	@Autowired
+	BookRepository bookRepo;
 
 
 	//get all books with pagination options, and sort option
 	@RequestMapping("/books")
-	Page<Book>sortAllBooks(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sort) {
-		Pageable pageable = PageRequest.of(page, size, Sort.by(sort).and(Sort.by("id")));
-		Page<Book> bookList = bookRepo.findAll(pageable);
+	List<Book>getAllBooks() {
+		List<Book> bookList = bookRepo.findAll();
 		return bookList;
 	}
 
 	// get book by id
-    @RequestMapping("/books/{id}")
-    Optional<Book> getBookById(@PathVariable("id") Long id) {
+	@RequestMapping("/books/{id}")
+	Optional<Book> getBookById(@PathVariable("id") Long id) {
 		Optional<Book> book = bookRepo.findById(id);
 		if(book.isPresent()){
 			return book;
 		} else {
 			throw new BookNotFoundException("No book with id: "+id);
 		}
-    }
+	}
 
 	//get books by author
 	@RequestMapping("/books/authors/{author}")
-	Page<Book>findBooksByAuthor(@PathVariable("author") String author ,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		Page<Book> bookList = bookRepo.findByAuthor(author, pageable);
+	List<Book>findBooksByAuthor(@PathVariable("author") String author) {
+		List<Book> bookList = bookRepo.findByAuthor(author);
 		if(!bookList.isEmpty()){
 			return bookList;
 		} else {
@@ -72,7 +65,7 @@ public class BookService {
 	}
 
 	//get books by ISBN number
-	@RequestMapping("/books/isbn/{isbn}")
+	@RequestMapping("/books/isbn-numbers/{isbn}")
 	List<Book>findBookByIsbn(@PathVariable("isbn") String isbn) {
 		List<Book> bookList = bookRepo.findByIsbn(isbn);
 		if(!bookList.isEmpty()){
@@ -82,14 +75,14 @@ public class BookService {
 		}
 	}
 
-    @PostMapping("/books")
-    ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
-        Book savedBook=bookRepo.save(book);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(savedBook.getId()).toUri();
-        return ResponseEntity.created(location).build();
-    }
+	@PostMapping("/books")
+	ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
+		Book savedBook=bookRepo.save(book);
+		URI location = ServletUriComponentsBuilder
+				.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(savedBook.getId()).toUri();
+		return ResponseEntity.created(location).build();
+	}
 
 	@PutMapping("books/{id}")
 	public Book updateBook(@Valid @RequestBody Book book, @PathVariable("id") Long id)
@@ -97,9 +90,6 @@ public class BookService {
 		Optional<Book> savedBook = bookRepo.findById(id);
 		if(savedBook.isPresent()){
 			Book existingBook = savedBook.get();
-			existingBook.setAuthor(book.getAuthor());
-			existingBook.setTitle(book.getTitle());
-			existingBook.setIsbn(book.getIsbn());
 			existingBook.setIsAvailable(book.getIsAvailable());
 			bookRepo.save(existingBook);
 			return existingBook;
@@ -108,7 +98,7 @@ public class BookService {
 		}
 	}
 
-    @DeleteMapping("/books/{id}")
+	@DeleteMapping("/books/{id}")
 	void deleteBookById(@PathVariable Long id) {
 		Optional<Book> book = bookRepo.findById(id);
 		if(book.isPresent()){

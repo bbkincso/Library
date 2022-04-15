@@ -1,17 +1,6 @@
-package com.example.borrowing.dto;
+package com.example.bookclient.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.util.List;
-
-public class Book {
+public class Book{
 
     private Long id;
     private String author;
@@ -22,7 +11,8 @@ public class Book {
     public Book() {
     }
 
-    public Book(String author, String title, String isbn, boolean isAvailable) {
+    public Book(Long id, String author, String title, String isbn, boolean isAvailable) {
+        this.id = id;
         this.author = author;
         this.title = title;
         this.isbn = isbn;
@@ -80,3 +70,4 @@ public class Book {
                 '}';
     }
 }
+
