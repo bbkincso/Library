@@ -1,6 +1,5 @@
-package com.bookcatalogue.dto;
+package com.library.dto;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -11,7 +10,6 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="books")
-@ApiModel(description = "Book model description")
 public class Book {
 
     @Id
