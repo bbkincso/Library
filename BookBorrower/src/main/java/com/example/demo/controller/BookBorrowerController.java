@@ -25,20 +25,22 @@ public class BookBorrowerController {
     }
 
     @RequestMapping("/borrowing-client")
-    List<Borrowing> sortAllBorrowings() {
-        log.info("sortAllBorrowings called");
+    List<Borrowing> getAllBorrowings() {
+        log.info("getAllBorrowings called");
         return bookBorrowingFeignClient.getAllBorrowings();
     }
 
     //get borrowings by books
     @RequestMapping("/borrowing-client/books/{bookId}")
     List<Borrowing>findBorrowingsByBookId(@PathVariable("bookId") Long bookId) {
+        log.info("findBorrowingsByBookId called");
         return bookBorrowingFeignClient.getBorrowingsByBookId(bookId);
     }
 
     // create borrowing
     @PostMapping("/borrowing-client")
     ResponseEntity<Borrowing> createBorrowing(@RequestBody Borrowing borrowing) {
+        log.info("createBorrowing called");
         return bookBorrowingFeignClient.saveBorrowing(borrowing);
     }
 
@@ -46,12 +48,14 @@ public class BookBorrowerController {
     @PutMapping("borrowing-client/{borrowingId}")
     Borrowing updateBorrowing(@RequestBody Borrowing borrowing, @PathVariable("borrowingId") Long borrowingId)
     {
+        log.info("updateBorrowing called");
         return bookBorrowingFeignClient.updateBorrowingById(borrowing, borrowingId);
     }
 
     // delete borrowing
     @DeleteMapping("/borrowing-client/{borrowingId}")
     ResponseEntity<Borrowing> deleteBorrowingById(@PathVariable("borrowingId") Long borrowingId) {
+        log.info("deleteBorrowingById called");
         return bookBorrowingFeignClient.deleteBorrowingById(borrowingId);
     }
 }

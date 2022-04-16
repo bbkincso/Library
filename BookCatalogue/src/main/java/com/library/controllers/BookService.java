@@ -1,8 +1,8 @@
 package com.library.controllers;
 
 import com.library.dao.BookRepository;
-import com.library.dto.Book;
 import com.library.exception.BookNotFoundException;
+import com.library.dto.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class BookService {
     //get all books with pagination options, and sort option
     @RequestMapping("/books")
     List<Book> getAllBooks() {
-        log.info("sortAllBorrowings called");
+        log.info("getAllBooks called");
         List<Book> bookList = bookRepo.findAll();
         return bookList;
     }
@@ -35,6 +35,7 @@ public class BookService {
     // get book by id
     @RequestMapping("/books/{id}")
     Optional<Book> getBookById(@PathVariable("id") Long id) {
+        log.info("getBookById called");
         Optional<Book> book = bookRepo.findById(id);
         if(book.isPresent()){
             return book;
@@ -46,6 +47,7 @@ public class BookService {
     //get books by author
     @RequestMapping("/books/authors/{author}")
     List<Book>findBooksByAuthor(@PathVariable("author") String author) {
+        log.info("findBooksByAuthor called");
         List<Book> bookList = bookRepo.findByAuthor(author);
         if(!bookList.isEmpty()){
             return bookList;
@@ -57,6 +59,7 @@ public class BookService {
     //get books by title
     @RequestMapping("/books/titles/{title}")
     List<Book>findBooksByTitle(@PathVariable("title") String title) {
+        log.info("findBooksByTitle called");
         List<Book> bookList = bookRepo.findByTitle(title);
         if(!bookList.isEmpty()){
             return bookList;
@@ -68,6 +71,7 @@ public class BookService {
     //get books by ISBN number
     @RequestMapping("/books/isbn-numbers/{isbn}")
     List<Book>findBookByIsbn(@PathVariable("isbn") String isbn) {
+        log.info("findBookByIsbn called");
         List<Book> bookList = bookRepo.findByIsbn(isbn);
         if(!bookList.isEmpty()){
             return bookList;
@@ -78,6 +82,7 @@ public class BookService {
 
     @PostMapping("/books")
     ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
+        log.info("createBook called");
         Book savedBook=bookRepo.save(book);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
@@ -88,6 +93,7 @@ public class BookService {
     @PutMapping("books/{id}")
     public Book updateBook(@Valid @RequestBody Book book, @PathVariable("id") Long id)
     {
+        log.info("updateBook called");
         Optional<Book> savedBook = bookRepo.findById(id);
         if(savedBook.isPresent()){
             Book existingBook = savedBook.get();
@@ -95,18 +101,19 @@ public class BookService {
             bookRepo.save(existingBook);
             return existingBook;
         } else{
-            throw new BookNotFoundException("No book with id: "+id);
+            throw new BookNotFoundException("No book found with id: "+id);
         }
     }
 
     @DeleteMapping("/books/{id}")
     void deleteBookById(@PathVariable Long id) {
+        log.info("deleteBookById called");
         Optional<Book> book = bookRepo.findById(id);
         if(book.isPresent()){
             Book existingBook = book.get();
             bookRepo.delete(existingBook);
         } else {
-            throw new BookNotFoundException("No book with id: "+id);
+            throw new BookNotFoundException("No book found with id: "+id);
         }
     }
 }

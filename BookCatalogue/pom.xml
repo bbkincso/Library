@@ -11,7 +11,7 @@
 	<groupId>com</groupId>
 	<artifactId>library</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>library</name>
+	<name>Book Catalogue</name>
 	<description>Book Catalogue</description>
 	<properties>
 		<java.version>11</java.version>

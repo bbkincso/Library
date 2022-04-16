@@ -47,6 +47,7 @@ public class BorrowingController {
 
     @RequestMapping("/borrowings/{borrowingId}")
     Optional<Borrowing> getBorrowingById(@PathVariable("borrowingId") Long borrowingId) {
+        log.info("getBorrowingById called");
         Optional<Borrowing> borrowing = borrowingRepo.findById(borrowingId);
         if(borrowing.isPresent()){
             Long bookId = borrowing.get().getBookId();
@@ -54,13 +55,14 @@ public class BorrowingController {
             borrowing.get().setBookInfo(book);
             return borrowing;
         } else {
-            throw new BorrowingNotFoundException("No borrowing with id: "+borrowingId);
+            throw new BorrowingNotFoundException("No borrowing found with id: "+borrowingId);
         }
     }
 
     //get borrowings by books
     @RequestMapping("/borrowings/books/{id}")
     List<Borrowing>findBorrowingsByBookId(@PathVariable("id") Long bookId) {
+        log.info("findBorrowingsByBookId called");
         List<Borrowing> borrowingList = borrowingRepo.findByBookId(bookId);
         if(!borrowingList.isEmpty()){
             for (Borrowing borrowing : borrowingList) {
@@ -77,6 +79,7 @@ public class BorrowingController {
     // create borrowing
     @PostMapping("/borrowings")
     ResponseEntity<Borrowing> createBorrowing(@Valid @RequestBody Borrowing borrowing) {
+        log.info("createBorrowing called");
         Borrowing savedBorrowing=borrowingRepo.save(borrowing);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{borrowingId}")
@@ -88,6 +91,7 @@ public class BorrowingController {
     @PutMapping("borrowings/{borrowingId}")
     public Borrowing updateBorrowing(@Valid @RequestBody Borrowing borrowing, @PathVariable("borrowingId") Long borrowingId)
     {
+        log.info("updateBorrowing called");
         Optional<Borrowing> savedBorrowing = borrowingRepo.findById(borrowingId);
         if(savedBorrowing.isPresent()){
             Borrowing existingBorrowing = savedBorrowing.get();
@@ -97,19 +101,20 @@ public class BorrowingController {
             borrowingRepo.save(existingBorrowing);
             return existingBorrowing;
         } else{
-            throw new BorrowingNotFoundException("No borrowing with id: "+borrowingId);
+            throw new BorrowingNotFoundException("No borrowing found with id: "+borrowingId);
         }
     }
 
     // delete borrowing
     @DeleteMapping("/borrowings/{borrowingId}")
     void deleteBorrowingById(@PathVariable("borrowingId") Long borrowingId) {
+        log.info("deleteBorrowingById called");
         Optional<Borrowing> borrowing = borrowingRepo.findById(borrowingId);
         if(borrowing.isPresent()){
             Borrowing existingBorrowing = borrowing.get();
             borrowingRepo.delete(existingBorrowing);
         } else {
-            throw new BorrowingNotFoundException("No borrowing with id: "+borrowingId);
+            throw new BorrowingNotFoundException("No borrowing found with id: "+borrowingId);
         }
     }
 }
