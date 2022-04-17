@@ -31,7 +31,7 @@ public class BookService {
     @Autowired
     BookRepository bookRepo;
 
-    //get all books with pagination options, and sort option
+    //get all books
     @RequestMapping("/books")
     @Operation(summary = "Get all books.", responses = {
             @ApiResponse(description = "Get all books success.", responseCode = "200",

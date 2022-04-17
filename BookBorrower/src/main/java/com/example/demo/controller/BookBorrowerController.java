@@ -18,12 +18,14 @@ public class BookBorrowerController {
     @Autowired
     private BookBorrowingFeignClients bookBorrowingFeignClient;
 
+    // get borrowing by id
     @RequestMapping(value = "/borrowing-client/{borrowingId}", method= RequestMethod.GET)
     public Borrowing borrowBook(@PathVariable(value = "borrowingId") Long borrowingId) {
         log.info("borrowBook called");
         return bookBorrowingFeignClient.getBorrowingById(borrowingId);
     }
 
+    // get all borrowings
     @RequestMapping("/borrowing-client")
     List<Borrowing> getAllBorrowings() {
         log.info("getAllBorrowings called");

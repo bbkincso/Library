@@ -19,7 +19,6 @@ public class AuthConfig extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    //add these for JWT
     @Autowired
     private TokenStore tokenStore;
 

@@ -10,9 +10,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
-//@EnableWebMvc
-//@EnableSwagger2
-//@Component
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SpringFoxConfig {
     @Bean
