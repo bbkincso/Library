@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
+import springfox.boot.starter.autoconfigure.OpenApiAutoConfiguration;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -27,4 +28,5 @@ public class SpringFoxConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
+
 }

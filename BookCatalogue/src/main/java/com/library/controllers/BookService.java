@@ -3,6 +3,12 @@ package com.library.controllers;
 import com.library.dao.BookRepository;
 import com.library.exception.BookNotFoundException;
 import com.library.dto.Book;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,6 +23,7 @@ import java.util.Optional;
 
 @RestController
 @Service
+@Tag(name = "Book")
 public class BookService {
 
     Logger log = LoggerFactory.getLogger(BookService.class);
@@ -26,6 +33,10 @@ public class BookService {
 
     //get all books with pagination options, and sort option
     @RequestMapping("/books")
+    @Operation(summary = "Get all books.", responses = {
+            @ApiResponse(description = "Get all books success.", responseCode = "200",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class)))
+    })
     List<Book> getAllBooks() {
         log.info("getAllBooks called");
         List<Book> bookList = bookRepo.findAll();
@@ -34,6 +45,11 @@ public class BookService {
 
     // get book by id
     @RequestMapping("/books/{id}")
+    @Operation(summary = "Get a book by it's id.", responses = {
+            @ApiResponse(description = "Get a book by it's id success.", responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class))),
+            @ApiResponse(description = "Book not found", responseCode = "404", content = @Content)
+    })
     Optional<Book> getBookById(@PathVariable("id") Long id) {
         log.info("getBookById called");
         Optional<Book> book = bookRepo.findById(id);
@@ -46,6 +62,11 @@ public class BookService {
 
     //get books by author
     @RequestMapping("/books/authors/{author}")
+    @Operation(summary = "Get a book by it's author.", responses = {
+            @ApiResponse(description = "Get a book by it's author success.", responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class))),
+            @ApiResponse(description = "Book not found", responseCode = "404", content = @Content)
+    })
     List<Book>findBooksByAuthor(@PathVariable("author") String author) {
         log.info("findBooksByAuthor called");
         List<Book> bookList = bookRepo.findByAuthor(author);
@@ -58,6 +79,11 @@ public class BookService {
 
     //get books by title
     @RequestMapping("/books/titles/{title}")
+    @Operation(summary = "Get a book by it's title.", responses = {
+            @ApiResponse(description = "Get a book by it's title success.", responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class))),
+            @ApiResponse(description = "Book not found", responseCode = "404", content = @Content)
+    })
     List<Book>findBooksByTitle(@PathVariable("title") String title) {
         log.info("findBooksByTitle called");
         List<Book> bookList = bookRepo.findByTitle(title);
@@ -70,6 +96,11 @@ public class BookService {
 
     //get books by ISBN number
     @RequestMapping("/books/isbn-numbers/{isbn}")
+    @Operation(summary = "Get a book by it's ISBN number.", responses = {
+            @ApiResponse(description = "Get a book by it's ISBN number success.", responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class))),
+            @ApiResponse(description = "Book not found", responseCode = "404", content = @Content)
+    })
     List<Book>findBookByIsbn(@PathVariable("isbn") String isbn) {
         log.info("findBookByIsbn called");
         List<Book> bookList = bookRepo.findByIsbn(isbn);
@@ -80,7 +111,12 @@ public class BookService {
         }
     }
 
+    // create book
     @PostMapping("/books")
+    @Operation(summary = "Create a new book.", responses = {
+            @ApiResponse(description = "Create a new book success.", responseCode = "201",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class)))
+    })
     ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
         log.info("createBook called");
         Book savedBook=bookRepo.save(book);
@@ -90,7 +126,13 @@ public class BookService {
         return ResponseEntity.created(location).build();
     }
 
+    // update book
     @PutMapping("books/{id}")
+    @Operation(summary = "Update a book by it's id.", responses = {
+            @ApiResponse(description = "Update a book by it's id success.", responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class))),
+            @ApiResponse(description = "Book not found", responseCode = "404", content = @Content)
+    })
     public Book updateBook(@Valid @RequestBody Book book, @PathVariable("id") Long id)
     {
         log.info("updateBook called");
@@ -105,7 +147,13 @@ public class BookService {
         }
     }
 
+    // delete book
     @DeleteMapping("/books/{id}")
+    @Operation(summary = "Delete a book by it's id.", responses = {
+            @ApiResponse(description = "Delete a book by it's id. success.", responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class))),
+            @ApiResponse(description = "Book not found", responseCode = "404", content = @Content)
+    })
     void deleteBookById(@PathVariable Long id) {
         log.info("deleteBookById called");
         Optional<Book> book = bookRepo.findById(id);
