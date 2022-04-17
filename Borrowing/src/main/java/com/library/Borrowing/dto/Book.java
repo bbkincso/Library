@@ -1,11 +1,20 @@
 package com.library.Borrowing.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "Book model for Borrowing Service")
 public class Book {
 
+    @ApiModelProperty(notes = "The id of a book.")
     private Long id;
+    @ApiModelProperty(notes = "The author/authors of a book. Need to be at lest 2 characters.")
     private String author;
+    @ApiModelProperty(notes = "The title of a book. Need to be at lest 2 characters.")
     private String title;
+    @ApiModelProperty(notes = "The ISBN number of a book. It must be in a valid ISBN-10 or ISBN-13 format.")
     private String isbn;
+    @ApiModelProperty(notes = "Shows if a book is available to borrow.")
     private boolean isAvailable;
 
     public Book() {

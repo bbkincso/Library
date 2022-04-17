@@ -1,6 +1,7 @@
 package com.library.Borrowing.dto;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,34 +11,41 @@ import java.util.Date;
 
 @Entity
 @Table(name="borrowings")
-@ApiModel(description = "Borrowing model description")
+@ApiModel(description = "Borrowing model of Borrowing Service")
 public class Borrowing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @ApiModelProperty(notes = "The id of Borrowing.")
     private Long borrowingId;
 
     @CreationTimestamp
     @Column(name="start_date", nullable = false, updatable=false)
+    @ApiModelProperty(notes = "The date when the borrowing started.")
     private Date startDate;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     @Column(name = "end_date")
+    @ApiModelProperty(notes = "The date when the borrowing ends.")
     private Date endDate;
 
     @Enumerated(EnumType.STRING)
+    @ApiModelProperty(notes = "The status of borrowing. (Open, Closed or Late")
     private Status status;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @ApiModelProperty(notes = "The id of the user who borrowed a book.")
     private User user;
 
     @Column(name = "book_id")
+    @ApiModelProperty(notes = "The id of the book which has been borrowed.")
     private Long bookId;
 
     @Transient
+    @ApiModelProperty(notes = "The description of the book.")
     private Book bookInfo;
 
     public Borrowing() {

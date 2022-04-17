@@ -2,6 +2,7 @@ package com.library.Borrowing.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -10,33 +11,39 @@ import java.util.Date;
 
 @Entity
 @Table(name="users")
-@ApiModel(description = "User model description")
+@ApiModel(description = "User model of Borrowing Service")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(notes = "The id of user.")
 //    @Column(name = "user_id")
     @Column(name = "id")
     private Long userId;
     @NotEmpty
+    @ApiModelProperty(notes = "The first name of user. Needs to be at least 2 characters.")
     @Size(min = 2, message = "FirstName should be at least 2 characters.")
     @Column(name = "first_name")
     private String firstName;
     @NotEmpty
-    @Size(min = 2, message = "FirstName should be at least 2 characters.")
+    @ApiModelProperty(notes = "The surname of user. Needs to be at least 2 characters.")
+    @Size(min = 2, message = "Surname should be at least 2 characters.")
     @Column(name = "last_name")
     private String lastName;
     @NotNull
+    @ApiModelProperty(notes = "The date of birth of user.")
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     @Column(name = "date_of_birth")
     private Date dob;
     @NotEmpty
-    @ApiModelProperty(notes = "isAvailable cannot be empty.")
+    @ApiModelProperty(notes = "The email address of user. Needs to be a valid email address.")
     @Email
     private String email;
+    @ApiModelProperty(notes = "The phone number of user. Needs to be a valid phone number.")
     @Pattern(regexp="(^$|[0-9]{10})", message = "Wrong format for phone number.")
     private String phone;
     @NotEmpty
+    @ApiModelProperty(notes = "The address of user.")
     private String address;
 
     public User() {
