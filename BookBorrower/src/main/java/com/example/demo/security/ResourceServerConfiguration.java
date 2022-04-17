@@ -13,7 +13,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     public void configure(HttpSecurity http) throws Exception
     {
         http.authorizeRequests()
-                .antMatchers(HttpMethod.DELETE, "/borrowing-client/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/borrowing-client/books/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
     }
 }
